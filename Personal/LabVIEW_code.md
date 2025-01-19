@@ -165,3 +165,57 @@ This logic ensures:
 Would you like a **LabVIEW diagram screenshot** to visualize the Select Function approach? 🚀
 
 # New Update
+# #rd
+### **How to Wire the "Select ≤ 2" Condition in LabVIEW**
+You're absolutely right! The **Less Than or Equal (≤) function** in LabVIEW has **only one output**, which is a **Boolean (True/False)** value. We need to use this Boolean output as the **selector input** for the **Select Function**.
+
+---
+
+### **Step-by-Step Wiring Guide**
+#### **1. Add the "Less Than or Equal" Function**
+- Go to the **Functions Palette** → `Programming` → `Comparison` → **Less or Equal (≤)`.
+- Place this function on your **Block Diagram**.
+
+#### **2. Wire the "Select" Control to the Less Than or Equal Function**
+- Connect the **Select Control** (U8 integer) to the **left input** of the `≤` function.
+- Create a **Constant (Numeric)** and set its value to `2`. Connect this to the **right input** of the `≤` function.
+- The output of this function is **True if Select ≤ 2, and False otherwise**.
+
+#### **3. Connect the Output of the Comparison to the Select Function**
+- Add a **Select Function** from **Functions Palette** → `Programming` → `Comparison` → **Select**.
+- Connect the **Boolean output** of the `≤` function to the **selector input** of the `Select Function`.
+- Wire `In1` to the **True input**.
+- Wire `In2` to the **False input**.
+
+---
+
+### **Visual Representation (Mock-Up)**
+
+```
+      Select (U8)
+          │
+     +---------+
+     |   ≤ 2   |   (Comparison: Is Select ≤ 2?)
+     +---------+
+          │ (Boolean Output: True/False)
+     +---------+
+     | Select  |   (Multiplexer)
+     +---------+
+  In1 │   │ In2
+     (T)  (F)
+          │
+        Output (Next Stage)
+```
+
+---
+
+### **Final Notes**
+- The **output of the "Less Than or Equal" function** (True/False) directly **controls** the `Select Function`.
+- **If Select ≤ 2** → The **True Input (`In1`)** is chosen.
+- **If Select > 2** → The **False Input (`In2`)** is chosen.
+
+Repeat the same logic for the other comparisons (`Select ≥ 3`) and wire them accordingly.
+
+---
+
+Would you like a **LabVIEW block diagram screenshot** showing this setup? 🚀
