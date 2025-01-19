@@ -1,82 +1,77 @@
-
-## **Steps to Create the SubVI:**
-
-### **Step 1: Create a New VI**
-1. Open **LabVIEW**.
-2. Create a new **VI** by selecting **File** → **New VI**.
-3. Open the **Block Diagram** by selecting **Window** → **Show Block Diagram**.
+### **Where to Connect the Input Selection (`Select` Control) in LabVIEW?**
+The `Select` control (an **unsigned 8-bit integer**) determines which of the four inputs (`In1`, `In2`, `In3`, `In4`) will be passed to the output (`Out`). It should be connected to the **selector terminal** of the **Select Functions**.
 
 ---
 
-### **Step 2: Add Controls and Indicators**
-1. In the **Front Panel**, add the following controls:
-   - **Four Numeric Controls** (Floating-Point):
-     - Rename them as **In1**, **In2**, **In3**, and **In4**.
-   - **One Unsigned 8-bit Integer Control**:
-     - Rename it as **Select**.
-   - **One Numeric Indicator** (Floating-Point):
-     - Rename it as **Out**.
+## **Step-by-Step Wiring Guide for the `Select` Control**
 
-2. Arrange the controls neatly on the **Front Panel**.
+1. **Place the Select Control**
+   - From the **Controls Palette**, add a `Numeric Control`.
+   - Change its representation to **Unsigned 8-bit Integer (U8)**.
+   - Label it **Select**.
 
----
+2. **Use a Comparison to Drive the Select Functions**
+   - The `Select` input should be **compared** using relational operators (`≤` and `≥`).
+   - These comparisons **decide which Select Function gets activated**.
 
-### **Step 3: Implement the Multiplexer Logic in the Block Diagram**
-1. **Navigate to the Block Diagram**.
-2. **Add a Case Structure**:
-   - From the **Functions Palette**, go to:
-     ```
-     Programming → Structures → Case Structure
-     ```
-   - Place the **Case Structure** on the Block Diagram.
-   - Connect the **Select** control to the **Case Selector** input.
+3. **Connect `Select` to the Select Functions as follows:**
+   - **First Select Function** (choosing between `In1` and `In2`):
+     - Connect `Select ≤ 2` as the **selector input**.
+     - Connect `In1` to **True Input**.
+     - Connect `In2` to **False Input**.
+   - **Second Select Function** (choosing between `In3` and `In4`):
+     - Connect `Select ≥ 3` as the **selector input**.
+     - Connect `In3` to **True Input**.
+     - Connect `In4` to **False Input**.
+   - **Final Select Function** (choosing between first and second Select Function outputs):
+     - Connect `Select ≤ 2` as the **selector input**.
+     - Connect **Output from First Select Function** to **True Input**.
+     - Connect **Output from Second Select Function** to **False Input**.
 
-3. **Create Cases for Each Selection Value**:
-   - Add **four cases** (`1`, `2`, `3`, and `4`).
-   - Inside each case, wire the corresponding input to the output:
-     - **Case 1**: Wire **In1** to **Out**.
-     - **Case 2**: Wire **In2** to **Out**.
-     - **Case 3**: Wire **In3** to **Out**.
-     - **Case 4**: Wire **In4** to **Out**.
-   - For any **default case**, you can set the output to `0` or any desired value.
+4. **Final Wiring**
+   - Connect the **output** of the final Select Function to `Out`.
 
 ---
 
-### **Step 4: Create the SubVI**
-1. Select all the elements in the **Block Diagram**.
-2. From the **Edit menu**, choose **Create SubVI**.
-3. This will automatically generate a subVI that you can use in other programs.
-4. Save the subVI with a meaningful name, such as **Multiplexer_SubVI.vi**.
+## **Visual Representation of Wiring (Text-Based Mock-up)**
+
+```
+         Select (U8)
+             │
+        +--------------+
+        |  Comparison  |  
+        +--------------+
+       /        \
+  (≤2)          (≥3)
+    │             │
+ +---------+   +---------+
+ | Select  |   | Select  |  
+ |   (1)   |   |   (2)   |  
+ +---------+   +---------+
+  In1  In2     In3  In4
+     \    /       \    /
+      \  /         \  /
+     +-------------+
+     |  Select (3) |  <-- (Final Selection)
+     +-------------+
+           │
+         Output (Out)
+```
 
 ---
 
-### **Step 5: Testing the SubVI**
-1. Open the **Top-Level VI** where you want to use this subVI.
-2. Place the **Multiplexer SubVI** inside the **Block Diagram**.
-3. Provide test inputs (`In1`, `In2`, `In3`, `In4`) and change the **Select** value to verify the correct output.
+### **Key Takeaways**
+- The **Select Control** is used to decide **which input** is selected.
+- The **comparison logic (`≤ 2` and `≥ 3`)** determines **which Select Function** gets triggered.
+- The **final Select Function** makes the ultimate decision between the first two.
 
----
+This setup ensures:
+- `Select = 1` → Output = `In1`
+- `Select = 2` → Output = `In2`
+- `Select = 3` → Output = `In3`
+- `Select = 4` → Output = `In4`
 
-## **Alternative Approach Using the Select Function**
-Instead of a **Case Structure**, you can use the **Select Function**:
-1. From the **Functions Palette**, go to:
-   ```
-   Programming → Comparison → Select
-   ```
-2. Use a **nested Select** approach:
-   - First **Select Function**: Chooses between `In1` and `In2` (if `Select` is `1` or `2`).
-   - Second **Select Function**: Chooses between `In3` and `In4` (if `Select` is `3` or `4`).
-   - A final **Select Function**: Chooses between the results of the first two.
-3. This approach avoids a **Case Structure** but requires three **Select Functions**.
-
----
-
-### **Final Thoughts**
-- The **Case Structure** method is more readable.
-- The **Select Function** method is compact and efficient.
-- The subVI can now be used in multiple VIs, making your program modular.
-
-Would you like a screenshot of the block diagram or a LabVIEW file? 🚀
+Would you like a **LabVIEW file example** to test this logic? 🚀
 
 #### Version 2 ###
 ### **Understanding Function VI and the Programming Comparison Palette in LabVIEW**
@@ -168,3 +163,5 @@ This logic ensures:
 - **Using Select Functions in a nested approach** provides a compact way to implement selection logic.
 
 Would you like a **LabVIEW diagram screenshot** to visualize the Select Function approach? 🚀
+
+# New Update
