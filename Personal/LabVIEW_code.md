@@ -1,6 +1,3 @@
-Certainly! Below is a step-by-step guide to creating a **subVI** in **LabVIEW** that multiplexes four inputs into a single output based on a selection control.
-
----
 
 ## **Steps to Create the SubVI:**
 
